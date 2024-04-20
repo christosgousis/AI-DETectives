@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import json
 
 def scrape_article(url):
     # Send a GET request to the URL
@@ -10,6 +11,10 @@ def scrape_article(url):
         # Parse the HTML content of the page
         soup = BeautifulSoup(response.content, "html.parser")
 
+        # Extract the title of the article
+        title_tag = soup.find("h1", class_="entry-title mb-5 mt-2")
+        title = title_tag.get_text() if title_tag else None
+
         # Find all <p> tags with text
         p_tags_with_text = soup.find_all("p")
 
@@ -18,7 +23,7 @@ def scrape_article(url):
         for p_tag in p_tags_with_text:
             article_text += p_tag.get_text() + "\n"
 
-        return article_text
+        return {"title": title, "text": article_text}
     else:
         print(f"Failed to retrieve the webpage at {url}")
         return None
@@ -62,8 +67,11 @@ def search_urls():
 
     # Loop through each URL and scrape the article text
     for url in article_urls:
-        article_text = scrape_article(url)
-        if article_text:
-            print(article_text)
+        article_data = scrape_article(url)
+        if article_data:
+            # Append the article data to a JSON file
+            with open("articles.json", "a", encoding="utf-8") as json_file:
+                json.dump(article_data, json_file, ensure_ascii=False)
+                json_file.write("\n")  # Add a newline to separate objects
 
 search_urls()

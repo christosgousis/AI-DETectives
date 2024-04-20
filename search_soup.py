@@ -15,15 +15,18 @@ while True:
     if page.status_code == 200:
         soup = BeautifulSoup(page.content, 'html.parser')
         
-        # Find the container element that holds the search result links
-        result_container = soup.find('div', class_='columns is-max-900 is-flex-wrap-wrap')
+        # Find all paragraphs with the specified class
+        relevant_paragraphs = soup.find_all('p', class_='subtitle is-7 mb-3')
         
-        # Check if the container element exists
-        if result_container:
-            # Find all links (a tags) within the container
-            links = result_container.find_all('a', href=True)
-
-            # Extract the URLs from the links that point to the articles
+        # Extract the links beneath the relevant paragraphs
+        for paragraph in relevant_paragraphs:
+            # Find the parent element of the paragraph
+            parent_div = paragraph.find_parent('div')
+            
+            # Find all links within the parent element
+            links = parent_div.find_all('a', href=True)
+            
+            # Extract the URLs from the links
             for link in links:
                 href = link['href']
                 # Check if the URL contains 'kathimerini.gr/' and is not a category link
@@ -36,6 +39,7 @@ while True:
         # Break the loop if the page is not found (i.e., no more pages available)
         break
 
+# Remove duplicates from the list of article URLs
 article_urls = list(set(article_urls))
 num_urls = len(article_urls)
 

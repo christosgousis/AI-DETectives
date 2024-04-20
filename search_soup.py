@@ -12,7 +12,7 @@ def scrape_article(url):
         soup = BeautifulSoup(response.content, "html.parser")
 
         # Extract the title of the article
-        title_tag = soup.find("h1", class_="entry-title mb-5 mt-2")
+        title_tag = soup.find("h1", class_="entry-title")
         title = title_tag.get_text() if title_tag else None
 
         # Find all <p> tags with text

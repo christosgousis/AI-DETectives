@@ -10,16 +10,15 @@ def toggle_combobox():
         output_text.pack_forget()  # Hide the output text label if the combobox is selected
     else:
         combobox_frame.pack_forget()  # Hide the combobox frame if the checkbox is not selected
-        output_text.pack(pady=(5, 0), anchor="center")  # Show the output text label and center it horizontally
+        output_text.pack(pady=(5, 0), anchor="center") 
         
-
 def search():
-    keywords = entry.get()  # Get keywords from the entry widget
+    keywords = entry.get()  
     if keywords:
-        output_text.configure(text=f"Searching for: {keywords}")  # Update the output text
-        output_text.pack(pady=(5, 0), anchor="center")  # Show the output text label and center it horizontally
+        output_text.configure(text=f"Searching for: {keywords}") 
+        output_text.pack(pady=(5, 0), anchor="center") 
     else:
-        output_text.pack_forget()  # Hide the output text label if no keywords are entered
+        output_text.pack_forget()  
 
 root = customtkinter.CTk()
 root.geometry("600x500")
@@ -42,21 +41,17 @@ search_button = customtkinter.CTkButton(master=root, text="Search", corner_radiu
 search_button.pack(pady=10)
 search_button.configure(width=50, height=20)
 
-# Checkbox
 checkbox_var = IntVar()
 checkbox = customtkinter.CTkCheckBox(master=root, text="I want to refine my search", variable=checkbox_var, command=toggle_combobox, font=("Helvetica", 13, "bold"))
 checkbox.pack(pady=(10, 0))  # Adjusting the top padding only
 
-# Frame to contain the combobox
 combobox_frame = customtkinter.CTkFrame(master=root)
 
-# Combobox
 combobox = customtkinter.CTkComboBox(master=combobox_frame, values=["Marketing", "Human Resources", "IT", "Sales"])
 combobox.pack(pady=10)
 combobox.configure(width=300, height=30)
 
-# Output text
 output_text = customtkinter.CTkLabel(master=root, text="", wraplength=400)
-output_text.pack(pady=(5, 0), anchor="center")  # Adjust the top padding for the output text label and center it horizontally
+output_text.pack(pady=(5, 0), anchor="center")  
 
 root.mainloop()

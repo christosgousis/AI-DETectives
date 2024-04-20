@@ -1,1 +1,1 @@
-"# AI-DETectives" 
+**AI-DETectives**

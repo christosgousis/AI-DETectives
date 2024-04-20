@@ -1,7 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
 
-base_url = 'https://www.kathimerini.gr/search/nova%20united%20group/'
+keywords = input("Enter keywords separated by spaces: ").split()
+
+base_url = 'https://www.kathimerini.gr/search/' + '%20'.join(keywords) + '/'
 article_urls = []
 
 # Iterate through each page of search results
@@ -14,7 +16,7 @@ while True:
     # Check if the page exists
     if page.status_code == 200:
         soup = BeautifulSoup(page.content, 'html.parser')
-        
+    
         # Find all paragraphs with the specified class
         relevant_paragraphs = soup.find_all('p', class_='subtitle is-7 mb-3')
         

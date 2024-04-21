@@ -86,7 +86,7 @@ def search_urls(keywords):
                     json_file.write(",\n")  # Add a newline to separate objects
 
 
-def api_call():
+def api_call_1(keywords):
     # Create a new Cohere client
     co = cohere.Client("SNUTZQkRHFkybeGNay7bwNftreTkYPjsExGIpRWm")
     # Open the JSON file
@@ -96,17 +96,37 @@ def api_call():
 
     response = co.chat(
         documents=data,
-        message="Τι είναι το Data Jump;"
+        message="Θέλουμε να παράξεις μία εκτενή και ιδιαίτερα λεπτομερή αναφορά (report) έως 600 λέξεις,"
+           + " της οποίας η θεματολογία περιέχει τους ακόλουθους όρους: " + ' '.join(keywords) 
     )
     response_dict = json.loads(response.json())
 
-    # text = response_dict["text"]
-    print(response_dict["text"])
+    return response_dict
 
+def api_call_2(text, department):
+    # Create a new Cohere client
+    co = cohere.Client("SNUTZQkRHFkybeGNay7bwNftreTkYPjsExGIpRWm")
+    
+    response = co.chat(
+        message="Με βάση αυτό:" + ' '.join(text)+ ". Θεώρησε ότι είμαι ένας νέος εργαζόμενος της NOVA στο τμήμα  " + ' '.join(department)
+        + " Με ποιον τρόπο θα μπορούσε το ανωτέρω report να αξιοποιηθεί από το τμήμα "+ ' '.join(department)  + "της Εταιρείας"
+        + "και να παραχθεί ωφέλιμη, καινοτομική γνώση για την βελτίωση του Οργανισμού και την παραγωγή νέων ιδεών."
+        + "Απαιτούμε αυτό το κείμενο να μην υπερβαίνει τις 300 λέξεις. Αν η γνώση δεν είναι ωφέλιμη, παρακαλώ μην υπερβάλλεις και να μην τυπώσεις τίποτα απολύτως."
+    )
+    response_dict = json.loads(response.json())
+
+    return response_dict
 
 def main():
     keywords = input("Enter keywords separated for search: ").split()
+    department = input("Enter department for search: ").split()
     search_urls(keywords)
-    api_call()
+    api_response_1  = api_call_1(keywords)
+    print("1h Apantisi: ")
+    print(api_response_1["text"])
+    api_response_2 = api_call_2(api_response_1["text"], department)
+    print("2h Apantisi: ")
+    print(api_response_2["text"])
+
 
 main()
